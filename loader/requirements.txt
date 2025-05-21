@@ -1,0 +1,5 @@
+PyYAML==6.0.2
+pymongo==4.13.0
+dotenv==0.9.9
+langchain-openai==0.3.12
+langchain-voyageai==0.1.3
