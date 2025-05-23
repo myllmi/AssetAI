@@ -1,12 +1,12 @@
 from pathlib import Path
 
-from ai.gen_ai import AIEmbedding
+from ai.gen_ai import AIEmbedding, EMBEDDING_META_LLAMA_3
 from db.db_mongo import DBMongo
 from loaders.yaml_loader import YAMLLoader, convert_dict_to_yaml
 
 source_dir = Path('./files')
 files = source_dir.iterdir()
-gen_ai = AIEmbedding()
+gen_ai = AIEmbedding(_embedding_model=EMBEDDING_META_LLAMA_3)
 db_mongo = DBMongo()
 for file in files:
     print(f'Importing file {file}')
