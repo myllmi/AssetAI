@@ -1,10 +1,15 @@
+import os
+
+from dotenv import load_dotenv
 from pymongo import MongoClient
 from pymongo.operations import SearchIndexModel
 
-MONGODB_ATLAS_CLUSTER_URI = 'mongodb+srv://devuser:Bye#081710@cluster0.qelssvp.mongodb.net/?retryWrites=true&w=majority'
+load_dotenv()
+
+MONGODB_ATLAS_CLUSTER_URI = f'mongodb+srv://{os.environ['MONGODB_USR']}:{os.environ['MONGODB_PWD']}@{os.environ['MONGODB_URL']}/?retryWrites=true&w=majority'
 
 
-class DaoMongo:
+class DBMongo:
 
     def __init__(self):
         self.mongo_client = MongoClient(MONGODB_ATLAS_CLUSTER_URI)
@@ -81,8 +86,8 @@ class DaoMongo:
         return list(result)
 
     ### DANGER ZONE ###
-    def clean_collection(self, _db, _collection):
-        collection = self.get_collection(_db, _collection)
-        list_docs = self.get_many(_db, _collection, {})
-        for doc in list_docs:
-            collection.delete_one({'_id': doc['_id']})
+    # def clean_collection(self, _db, _collection):
+    #     collection = self.get_collection(_db, _collection)
+    #     list_docs = self.get_many(_db, _collection, {})
+    #     for doc in list_docs:
+    #         collection.delete_one({'_id': doc['_id']})
