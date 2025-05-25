@@ -29,6 +29,5 @@ def mission_control(state: State):
         HumanMessage(content=state["messages"][-1].content)
     ]
     _output = structured_llm.invoke(messages)
-    print(_output)
 
     return {"messages": [AIMessage(content=json.dumps(_output.model_dump()))]}

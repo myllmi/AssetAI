@@ -24,7 +24,7 @@ def search_service_agent(state):
     for spec in retriever:
         arr_spec.append(spec['service_spec'])
     ai = AIModel(_model=LLM_OPENAI_GPT_4O_MINI)
-    answer = ai.chat('\n\n'.join(arr_spec), SIMPLE_DOCUMENTATION_PROMPT)
+    answer = ai.chat('\n\n'.join(arr_spec), SIMPLE_DOCUMENTATION_PROMPT, _stream=True)
 
     return {
         "messages": [AIMessage(content=answer.content)]

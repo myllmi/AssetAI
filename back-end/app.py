@@ -56,22 +56,15 @@ def stream():
 
 @app.route('/chat/q', methods=['POST'])
 def query():
-    print(request)
     object_request = request.get_json()
-    print(object_request)
     res_stream = get_response(object_request['_question'])
     for message, metadata in res_stream:
-        # print(message)
-        # print(metadata)
-        if metadata["langgraph_node"] != "mission_control":
-            arr_content.append('data: ' + message.content + '\n\n' + 'id: ' + object_request['randomEvent'] + '\n\n')
+        if metadata["langgraph_node"] != "mission_control" and "checkpoint_ns" in metadata:
+            obj_stream = {
+                "v": message.content
+            }
+            arr_content.append('data: ' + json.dumps(obj_stream) + '\n\n')
     return {}, 200
-    #
-    # response_helper = ResponseHelper()
-    # response_helper.set_data({
-    #     'llm': get_response(object_request['term'])
-    # })
-    # return response_helper.get_response()
 
 
 if __name__ == '__main__':
