@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from flask import Flask, json, request, Response, stream_with_context
 from flask_cors import CORS
 from werkzeug.exceptions import HTTPException
@@ -57,7 +59,9 @@ def stream():
 @app.route('/chat/q', methods=['POST'])
 def query():
     object_request = request.get_json()
+    print('START GET_RESPONSE ', datetime.now())
     res_stream = get_response(object_request['_question'])
+    print('END GET_RESPONSE ', datetime.now())
     for message, metadata in res_stream:
         if metadata["langgraph_node"] != "mission_control" and "checkpoint_ns" in metadata:
             obj_stream = {

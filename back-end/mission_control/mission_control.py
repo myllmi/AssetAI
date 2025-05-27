@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 from typing import TypedDict, Annotated
 
 from langchain_core.messages import SystemMessage, HumanMessage, AIMessage
@@ -28,6 +29,8 @@ def mission_control(state: State):
         SystemMessage(content=MISSION_CONTROL_PROMPT),
         HumanMessage(content=state["messages"][-1].content)
     ]
+    print('START INVOKE ', datetime.now())
     _output = structured_llm.invoke(messages)
+    print('END INVOKE ', datetime.now())
 
     return {"messages": [AIMessage(content=json.dumps(_output.model_dump()))]}
