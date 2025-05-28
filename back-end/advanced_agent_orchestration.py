@@ -57,9 +57,9 @@ def get_response(_prompt):
 # response = graph.invoke({'messages': ('user', 'how is google doing in the market today')})
 # response = graph.invoke({'messages': ('user', 'what can you tell me about langchain?')})
 # response = graph.invoke({'messages': ('user', 'Send email to Michael Smith')})
-# response = graph.invoke({'messages': ('user', 'I need a service REST to get allocated drivers')})
+# response = graph.invoke({'messages': ('user', 'I need a service to list of fleet managers')})
 # response = graph.invoke({'messages': ('user', 'Generate a documentation for the service Update Allocated Driver')})
-# response = graph.invoke({'messages': ('user', 'Generate a Java code using RestTemplate to call the service Update Allocated Driver')})
+# response = graph.invoke({'messages': ('user', 'Generate a Java code using RestTemplate to call the service list of fleet managers')})
 # response = graph.invoke({'messages': ('user', 'Crie um código Kotlin usando Spring WebFlux para chamar o serviço REST Upload Applicant Credit Score Stipulation Document')})
 # print('Assistant: ', response['messages'][-1].content)
 

@@ -1,13 +1,14 @@
 from pathlib import Path
 
-from ai.gen_ai import AIEmbedding, EMBEDDING_META_LLAMA_3
-from db.db_mongo import DBMongo
+from ai.gen_ai import AIEmbedding, EMBEDDING_OPENAI_TEXT_3_SMALL
+from db.db_qdrant import DBQdrant
 from loaders.yaml_loader import YAMLLoader, convert_dict_to_yaml
 
 source_dir = Path('./files')
 files = source_dir.iterdir()
-gen_ai = AIEmbedding(_embedding_model=EMBEDDING_META_LLAMA_3)
-db_mongo = DBMongo()
+gen_ai = AIEmbedding(_embedding_model=EMBEDDING_OPENAI_TEXT_3_SMALL)
+# db_mongo = DBMongo()
+db_qdrant = DBQdrant()
 for file in files:
     print(f'Importing file {file}')
     yaml_loader = YAMLLoader(_file_path=file)
@@ -24,15 +25,17 @@ for file in files:
                     ops[op] = spec
                 except RecursionError as e:
                     print(e)
-            obj_spec = ops[op]
+            summary = ops[op]['summary']
+            description = ops[op]['description']
+            obj_spec = {path: ops[op]}
+            print('Importing endpoint ', path)
             spec = convert_dict_to_yaml(obj_spec)
-            print('*** OBJ ', obj_spec)
-            print('*** SPEC', spec)
-            embedding_context = gen_ai.generate_embedding(obj_spec['summary'] + ' - ' + obj_spec['description'])
+            embedding_context = gen_ai.generate_embedding(summary + ' - ' + description)
             vector_dict = {
                 'service_spec': spec,
-                'summary': obj_spec['summary'],
-                'description': obj_spec['description'],
+                'summary': summary,
+                'description': description,
                 'plot_embedding': embedding_context,
             }
-            db_mongo.insert_one(_db='MYLLMI', _collection='API_SPEC', _dict=vector_dict)
+            db_qdrant.upsert_one(_dict=vector_dict)
+            # db_mongo.insert_one(_db='MYLLMI', _collection='API_SPEC', _dict=vector_dict)
