@@ -1,10 +1,12 @@
 import json
+from datetime import datetime
 
 from langchain_core.messages import AIMessage
 
 from ai.gen_ai import AIModel, LLM_OPENAI_GPT_4O_MINI
 from ai.prompts import FULL_DOCUMENTATION_PROMPT
-from retrive.contextual_retrieve import ContextualRetrieve
+from retrive.QDrantRetriever import QDrantRetriever
+from retrive.mongo_retrieve import MongoRetrieve
 
 
 def generate_documentation_agent(state):
@@ -16,12 +18,18 @@ def generate_documentation_agent(state):
     context = intent_data.get('context', 'No context available')
     confidence = intent_data.get('confidence', 0.0)
 
-    contextual_retrieve = ContextualRetrieve(_db='MYLLMI', _collection='LABS', _query=context, _index='CONTEXT_INDEX')
+    print('START RETRIEVE ', datetime.now())
+    # contextual_retrieve = MongoRetrieve(_db='MYLLMI', _collection='LABS', _query=context, _index='CONTEXT_INDEX')
+    contextual_retrieve = QDrantRetriever(_query=context)
     retriever = contextual_retrieve.get_retriever()
+    print('END RETRIEVE ', datetime.now())
 
-    spec = retriever[0]['service_spec']
+    # spec = retriever[0]['service_spec'] # MongoDB
+    spec = retriever[0].payload['service_spec']
+    print('START AI Model ', datetime.now())
     ai = AIModel(_model=LLM_OPENAI_GPT_4O_MINI)
     answer = ai.chat(spec, FULL_DOCUMENTATION_PROMPT)
+    print('END AI Model ', datetime.now())
 
     return {
         "messages": [AIMessage(content=answer.content)]
