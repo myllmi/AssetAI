@@ -1,0 +1,18 @@
+.message {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.message.assistant .text {
+  padding: 12px 16px;
+  background-color: #2a2a3d;
+  border-radius: 10px;
+  max-width: 70%;
+  line-height: 1.4;
+}
+
+.message.assistant .avatar {
+  font-size: 24px;
+}
+

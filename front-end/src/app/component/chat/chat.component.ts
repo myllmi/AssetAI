@@ -6,11 +6,13 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {LLMResponse} from '../../model/objects';
 import {marked} from 'marked';
 import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
+import {InputChatComponent} from '../input-chat/input-chat.component';
 
 @Component({
   selector: 'app-chat',
   imports: [
-    FormsModule
+    FormsModule,
+    InputChatComponent
   ],
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.css'
@@ -18,25 +20,25 @@ import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
 export class ChatComponent {
 
   sseService = inject(SseService)
-  httpClient = inject(HttpClient)
   sanitizer = inject(DomSanitizer)
 
-  inputTerm: string = 'I need a service to get allocated drivers'
   private eventSub!: Subscription;
   content: string = ''
   htmlContent: SafeHtml = ''
 
 
   ngOnInit() {
-    const url = 'http://localhost:5000/chat/listen'; // Replace with your server endpoint
+    const url = 'http://localhost:5000/chat/listen?token=ABC123'; // Replace with your server endpoint
+
     this.eventSub = this.sseService.getServerSentEvent(url).subscribe({
       next: (event) => {
         console.log(event.data);
         const obj_data = JSON.parse(event.data)
         this.content += obj_data['v']
         const responseLLM = marked(this.content)
-        this.htmlContent = this.sanitizer.bypassSecurityTrustHtml(responseLLM.toString())
-        console.log(this.content)
+        const htmlContent = this.sanitizer.bypassSecurityTrustHtml(responseLLM.toString())
+        const elementAssistant = document.getElementById("ABC123");
+        elementAssistant!.innerHTML = responseLLM.toString();
       },
       error: (err) => {
         console.error('SSE error:', err);
@@ -48,20 +50,4 @@ export class ChatComponent {
     this.eventSub?.unsubscribe();
   }
 
-  askLLM() {
-    this.content = ''
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json; charset=utf-8',
-      'Accept': 'application/json'
-    });
-    const requestOptions = {headers: headers};
-    const bodyRequest = {
-      _question: this.inputTerm
-    }
-    this.httpClient.post<LLMResponse>('http://localhost:5000/chat/q', bodyRequest, requestOptions)
-      .subscribe(response => {
-        console.log(response)
-        }
-      )
-  }
 }

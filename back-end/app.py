@@ -45,6 +45,8 @@ def index():
 
 @app.route('/chat/listen')
 def stream():
+    token = request.args.get('token')
+    print('TOKEN: ', token)
     def event_stream():
         global arr_content
         while True:
