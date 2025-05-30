@@ -1,6 +1,16 @@
-<div>Term</div>
-<div><input type="text" [(ngModel)]="inputTerm"></div>
-<br>
-<div><button (click)="askLLM()">Ask</button></div>
-<br>
-<div [innerHTML]="htmlContent"></div>
+<div class="box-chat">
+  <div class="sidebar">
+    <h2>Asset AI</h2>
+    <nav>
+      <a href="#">Generate...</a>
+      <a href="#">I need a service...</a>
+    </nav>
+  </div>
+
+  <div class="chat-container">
+    <div class="messages" id="messageContainer">
+    </div>
+
+    <app-input-chat/>
+  </div>
+</div>

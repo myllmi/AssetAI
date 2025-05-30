@@ -31,6 +31,7 @@ def mission_control(state: State):
     ]
     print('START INVOKE ', datetime.now())
     _output = structured_llm.invoke(messages)
+    print(_output)
     print('END INVOKE ', datetime.now())
 
     return {"messages": [AIMessage(content=json.dumps(_output.model_dump()))]}
