@@ -1,4 +1,4 @@
 <div class="input-container">
-  <input type="text" placeholder="I need a service to list of fleet managers" [ngModel]="inputTerm" (keyup.enter)="askLLM()"/>
+  <input type="text" placeholder="I need a service to list of fleet managers" [(ngModel)]="inputTerm" (keyup.enter)="askLLM()"/>
   <button (click)="askLLM()">➤</button>
 </div>

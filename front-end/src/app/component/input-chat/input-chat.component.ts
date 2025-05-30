@@ -4,6 +4,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {LLMResponse} from '../../model/objects';
 import {marked} from 'marked';
 import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'app-input-chat',
@@ -18,19 +19,21 @@ export class InputChatComponent {
   httpClient = inject(HttpClient)
   sanitizer = inject(DomSanitizer)
 
-  inputTerm: string = 'I need a service to list of fleet managers' // TODO: Remove text
+  inputTerm: string = ''
   htmlContent: SafeHtml = ''
 
   askLLM() {
+    const idTag = uuidv4()
     this.messageUser()
-    this.messageAssistant("ABC123")
+    this.messageAssistant(idTag)
     const headers = new HttpHeaders({
       'Content-Type': 'application/json; charset=utf-8',
       'Accept': 'application/json'
     });
     const requestOptions = {headers: headers};
     const bodyRequest = {
-      _question: this.inputTerm
+      _question: this.inputTerm,
+      _tag: idTag
     }
     this.httpClient.post<LLMResponse>('http://localhost:5000/chat/q', bodyRequest, requestOptions)
       .subscribe(response => {
@@ -61,7 +64,6 @@ export class InputChatComponent {
     const tagDivText = document.createElement("div");
     tagDivText.setAttribute("class", "text");
     tagDivText.setAttribute("id", idDiv);
-    tagDivText.innerHTML = '<img src="assets/images/logo.png" alt="Logo" />';
     const tagDivAvatar = document.createElement("div");
     tagDivAvatar.setAttribute("class", "avatar");
     const tagAvatar = document.createTextNode("🤖");

@@ -45,8 +45,6 @@ def index():
 
 @app.route('/chat/listen')
 def stream():
-    token = request.args.get('token')
-    print('TOKEN: ', token)
     def event_stream():
         global arr_content
         while True:
@@ -62,14 +60,29 @@ def stream():
 def query():
     object_request = request.get_json()
     print('START GET_RESPONSE ', datetime.now())
+    id_tag = object_request['_tag']
     res_stream = get_response(object_request['_question'])
     print('END GET_RESPONSE ', datetime.now())
+    obj_stream = {
+        "v": '',
+        "idTag": '',
+        "action": 'SR'
+    }
+    arr_content.append('data: ' + json.dumps(obj_stream) + '\n\n')
     for message, metadata in res_stream:
         if metadata["langgraph_node"] != "mission_control" and "checkpoint_ns" in metadata:
             obj_stream = {
-                "v": message.content
+                "v": message.content,
+                "idTag": id_tag,
+                "action": 'CR'
             }
             arr_content.append('data: ' + json.dumps(obj_stream) + '\n\n')
+    obj_stream = {
+        "v": '',
+        "idTag": '',
+        "action": 'ER'
+    }
+    arr_content.append('data: ' + json.dumps(obj_stream) + '\n\n')
     return {}, 200
 
 

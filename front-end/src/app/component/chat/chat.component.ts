@@ -34,11 +34,15 @@ export class ChatComponent {
       next: (event) => {
         console.log(event.data);
         const obj_data = JSON.parse(event.data)
-        this.content += obj_data['v']
-        const responseLLM = marked(this.content)
-        const htmlContent = this.sanitizer.bypassSecurityTrustHtml(responseLLM.toString())
-        const elementAssistant = document.getElementById("ABC123");
-        elementAssistant!.innerHTML = responseLLM.toString();
+        if (obj_data['action'] === 'SR') {
+          this.content = '';
+        } else if (obj_data['action'] === 'CR') {
+          this.content += obj_data['v']
+          const responseLLM = marked(this.content)
+          const htmlContent = this.sanitizer.bypassSecurityTrustHtml(responseLLM.toString())
+          const elementAssistant = document.getElementById(obj_data['idTag']);
+          elementAssistant!.innerHTML = responseLLM.toString();
+        }
       },
       error: (err) => {
         console.error('SSE error:', err);
