@@ -8,6 +8,7 @@ ROUTE_MAP = {
     'search': 'search_service_agent',
     'documentation': 'generate_documentation_agent',
     'code': 'generate_code_agent',
+    'knowledge': 'knowledge_base_agent',
     'unknown': 'unknown_agent'
 }
 

@@ -21,7 +21,7 @@ def search_service_agent(state):
     print('START RETRIEVE ', datetime.now())
     # contextual_retrieve = MongoRetrieve(_db='MYLLMI', _collection='LABS', _query=context, _index='CONTEXT_INDEX')
     contextual_retrieve = QDrantRetriever(_query=context)
-    retriever = contextual_retrieve.get_retriever()
+    retriever = contextual_retrieve.get_retriever(_collection="API_EXTERNAL")
     print('END RETRIEVE ', datetime.now())
 
     arr_spec = []
@@ -30,7 +30,7 @@ def search_service_agent(state):
         # arr_spec.append(spec['service_spec']) # MongoDB
     print('START AI Model ', datetime.now())
     ai = AIModel(_model=LLM_OPENAI_GPT_4O_MINI)
-    answer = ai.chat('\n\n'.join(arr_spec), SIMPLE_DOCUMENTATION_PROMPT, _stream=True)
+    answer = ai.chat_spec('\n\n'.join(arr_spec), SIMPLE_DOCUMENTATION_PROMPT, _stream=True)
     print('END AI Model ', datetime.now())
 
     return {

@@ -64,12 +64,23 @@ class AIModel:
     def get_llm(self):
         return self.client_llm
 
-    def chat(self, _context, _prompt, _stream=False):
+    def chat_spec(self, _context, _prompt, _stream=False):
         prompt_template = PromptTemplate.from_template(_prompt)
         chain = prompt_template | self.client_llm
         return chain.invoke(
             {
                 "SERVICE": _context
+            },
+            stream=_stream
+        )
+
+    def chat_knowledge_base(self, _question, _context, _prompt, _stream=False):
+        prompt_template = PromptTemplate.from_template(_prompt)
+        chain = prompt_template | self.client_llm
+        return chain.invoke(
+            {
+                "KNOWLEDGE_BASE_ENTRIES": _context,
+                "USER_QUESTION": _question
             },
             stream=_stream
         )

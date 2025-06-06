@@ -21,14 +21,14 @@ def generate_documentation_agent(state):
     print('START RETRIEVE ', datetime.now())
     # contextual_retrieve = MongoRetrieve(_db='MYLLMI', _collection='LABS', _query=context, _index='CONTEXT_INDEX')
     contextual_retrieve = QDrantRetriever(_query=context)
-    retriever = contextual_retrieve.get_retriever()
+    retriever = contextual_retrieve.get_retriever(_collection="API_EXTERNAL")
     print('END RETRIEVE ', datetime.now())
 
     # spec = retriever[0]['service_spec'] # MongoDB
     spec = retriever[0].payload['service_spec']
     print('START AI Model ', datetime.now())
     ai = AIModel(_model=LLM_OPENAI_GPT_4O_MINI)
-    answer = ai.chat(spec, FULL_DOCUMENTATION_PROMPT)
+    answer = ai.chat_spec(spec, FULL_DOCUMENTATION_PROMPT)
     print('END AI Model ', datetime.now())
 
     return {

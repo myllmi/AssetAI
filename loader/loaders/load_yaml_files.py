@@ -37,5 +37,5 @@ for file in files:
                 'description': description,
                 'plot_embedding': embedding_context,
             }
-            db_qdrant.upsert_one(_dict=vector_dict)
+            db_qdrant.insert_one_spec(_dict=vector_dict)
             # db_mongo.insert_one(_db='MYLLMI', _collection='API_SPEC', _dict=vector_dict)

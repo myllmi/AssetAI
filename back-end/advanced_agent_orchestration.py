@@ -4,6 +4,7 @@ from langgraph.graph import StateGraph
 
 from agent.generate_code_agent import generate_code_agent
 from agent.generate_documentation_agent import generate_documentation_agent
+from agent.knowledge_base_agent import knowledge_base_agent
 from agent.search_service_agent import search_service_agent
 from agent.unknow_agent import unknown_agent
 from mission_control.mission_control import State, mission_control
@@ -26,6 +27,7 @@ graph_builder.add_conditional_edges('router', get_next_agent, {
     'search_service_agent': 'search_service_agent',
     'generate_documentation_agent': 'generate_documentation_agent',
     'generate_code_agent': 'generate_code_agent',
+    'knowledge_base_agent': 'knowledge_base_agent',
     'unknown_agent': 'unknown_agent',
     END: END
 })
@@ -41,6 +43,9 @@ graph_builder.add_edge('generate_code_agent', END)
 
 graph_builder.add_node('unknown_agent', unknown_agent)
 graph_builder.add_edge('unknown_agent', END)
+
+graph_builder.add_node('knowledge_base_agent', knowledge_base_agent)
+graph_builder.add_edge('knowledge_base_agent', END)
 
 graph_builder.set_entry_point('mission_control')
 

@@ -8,6 +8,6 @@ class QDrantRetriever:
         self._db_qdrant = DBQdrant()
         self._query = _query
 
-    def get_retriever(self):
+    def get_retriever(self, _collection):
         embeddings = self.ai.generate_embedding(self._query)
-        return self._db_qdrant.search_similar(_query_embedding=embeddings)
+        return self._db_qdrant.search_similar(_query_embedding=embeddings, _collection=_collection)

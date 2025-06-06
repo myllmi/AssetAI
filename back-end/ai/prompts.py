@@ -72,6 +72,24 @@ Use this OpenAPI specification as the source for all information:
 Don't explain your reasoning, just provide the answer.
 """
 
+KNOWLEDGE_BASE_PROMPT = """
+You are a helpful assistant with access to a structured knowledge base. Given the following question, 
+retrieve relevant information from the knowledge base and provide a clear, concise, and accurate solution.
+
+Knowledge Base Context:
+{KNOWLEDGE_BASE_ENTRIES}
+
+User Question:
+{USER_QUESTION}
+
+Instructions:
+- Summarize or synthesize the information into a solution.
+- If multiple solutions exist, briefly compare them.
+- If information is missing, state what additional data would be needed.
+
+Don't explain your reasoning, just provide the answer.
+"""
+
 MISSION_CONTROL_PROMPT = """
 You are a Mission Control, responsible for analyzing user input and determining the correct intent.
 Your only task is to classify the query into one of the following categories:
@@ -91,7 +109,7 @@ Your only task is to classify the query into one of the following categories:
     - 'Create a full documentation of the service REST to allocate drivers'
     - 'Give me a complete documentation of the service REST catalog of vehicles'
 
-2. **Generate Code ('code')**
+3. **Generate Code ('code')**
 - If user asks to generate a programing language code for a specific service REST
 - Examples:
     - 'Generate a Java code to service to quotation'
@@ -99,7 +117,12 @@ Your only task is to classify the query into one of the following categories:
     - 'Create a Java code with resttemplate of the service REST to allocate drivers'
     - 'Give me a complete code of the service REST catalog of vehicles in NodeJS'
 
-4. **Unknown ('unknown')**
+4. **Knowledge Base ('knowledge')**
+- if the user asks about an error he encountered
+- Examples:
+    - 'I am receiving an error about target to add digitalized signature'
+
+5. **Unknown ('unknown')**
 - For requests that don't fit into above categories
 
 ---
