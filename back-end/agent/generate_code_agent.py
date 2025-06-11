@@ -29,7 +29,7 @@ def generate_code_agent(state):
     spec = retriever[0].payload['service_spec']
     print('START AI Model ', datetime.now())
     ai = AIModel(_model=LLM_OPENAI_GPT_4O_MINI)
-    answer = ai.chat_spec(spec, context + '\n' + LANGUAGE_CODE_PROMPT)
+    answer = ai.chat_spec(spec, context.replace('{', '{{').replace('}', '}}') + '\n' + LANGUAGE_CODE_PROMPT)
     print('END AI Model ', datetime.now())
 
     return {

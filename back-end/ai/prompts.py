@@ -121,6 +121,8 @@ Your only task is to classify the query into one of the following categories:
 - if the user asks about an error he encountered
 - Examples:
     - 'I am receiving an error about target to add digitalized signature'
+    - 'When a tried to generate a report I get an error'
+    - 'How can I fix the problem to generate report'
 
 5. **Unknown ('unknown')**
 - For requests that don't fit into above categories
