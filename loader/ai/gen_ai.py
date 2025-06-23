@@ -6,9 +6,9 @@ from langchain_voyageai import VoyageAIEmbeddings
 load_dotenv()
 
 # Const Embedding models
-EMBEDDING_OPENAI_TEXT_3_SMALL = 'OPENAI_TEXT_3_SMALL'   # Dimensions: 1536
-EMBEDDING_VOYAGE_3_5 = 'VOYAGE_3_5'                     # Dimensions: 1024
-EMBEDDING_META_LLAMA_3 = 'META_LLAMA_3'                 # Dimensions: 4096 for LLaMA 3 8B / 8192 for LLaMA 3 70B
+EMBEDDING_OPENAI_TEXT_3_SMALL = 'OPENAI_TEXT_3_SMALL'  # Dimensions: 1536
+EMBEDDING_VOYAGE_3_5 = 'VOYAGE_3_5'  # Dimensions: 1024
+EMBEDDING_META_LLAMA_3 = 'META_LLAMA_3'  # Dimensions: 4096 for LLaMA 3 8B / 8192 for LLaMA 3 70B
 
 
 class AIEmbedding:
